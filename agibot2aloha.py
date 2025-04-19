@@ -44,10 +44,9 @@ def compress_frame(frame, quality=JPEG_QUALITY):
 
 def compress_frames(frames, quality=JPEG_QUALITY):
     compressed_frames = []
-    with ThreadPoolExecutor() as executor:
-        futures = [executor.submit(compress_frame, frame, quality) for frame in frames]
-        for future in tqdm(as_completed(futures), total=len(futures), desc="Compressing Frames", leave=False):
-            compressed_frames.append(future.result())
+    for frame in tqdm(frames, desc="Compressing Frames", leave=False):
+        compressed_frame = compress_frame(frame, quality)
+        compressed_frames.append(compressed_frame)
     return compressed_frames
 
 
